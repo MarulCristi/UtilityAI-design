@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UtilityAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Background Animation */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #0a192f, #112240);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .circuit-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, #00f2fe 0.5px, transparent 1px) 0 0 / 50px 50px,
+                linear-gradient(0deg, #00f2fe 0.5px, transparent 1px) 0 0 / 50px 50px;
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Phone Container */
+        .phone-container {
+            position: relative;
+            width: 375px;
+            height: 750px;
+            background: #000;
+            border-radius: 40px;
+            border: 8px solid #333;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.3);
+            z-index: 1;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: #000;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            z-index: 3;
+        }
+        
+        .phone-screen {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #282c34;
+            overflow-y: auto;
+            z-index: 2;
+        }
+        .clock {
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: #00f2fe;
+            z-index: 10;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+
+        .utility-ai-logo {
+            width: 200px;
+            height: auto;
+            margin: 60px auto 20px;
+            display: block;
+        }
+
+        .login-page {
+            position: fixed;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 2s ease-in-out;
+            width: 90%;
+            max-width: 300px;
+        }
+        /* Content Styles */
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+        }
+
+        .animated-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0;
+            position: relative;
+            animation: slideIn 2s ease-out, zoomFade 2s 2s forwards;
+            opacity: 1;
+        }
+
+        .login-page {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 2s ease-in-out;
+            width: 90%;
+            max-width: 300px;
+        }
+
+        .login-page.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #282c34;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .dashboard.visible {
+            display: flex;
+        }
+
+        .dashboard h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: bounceIn 1s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.2); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Existing styles remain the same */
+        form {
+            display: flex;
+            flex-direction: column;
+            margin: 20px auto;
+            width: 100%;
+        }
+
+        form input {
+            margin: 10px 0;
+            padding: 15px;
+            font-size: 1rem;
+            border: 1px solid #444;
+            background: #333;
+            color: white;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        form input::placeholder {
+            color: #888;
+        }
+
+        form button, #skip-login {
+            background-color: #e91e63;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        form button:hover, #skip-login:hover {
+            background-color: #d81b60;
+        }
+
+        /* Rest of your existing styles remain unchanged */
+        .team-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #e91e63;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+
+        /* Keep all other existing styles */
+        .team-page {
+        display: none;
+        opacity: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1a1f25, #282c34);
+        z-index: 2000;
+        overflow-y: auto;
+        padding: 20px;
+        box-sizing: border-box;
+        transition: opacity 0.5s ease-in-out;
+        }
+        .team-page.visible {
+            display: block;
+            opacity: 1;
+        }
+
+        .team-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .team-header h2 {
+            font-size: 1.8rem;
+            color: #00f2fe;
+            margin: 20px 0;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 242, 254, 0.1);
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.2);
+        }
+
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #00f2fe;
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        }
+
+        .team-member h3 {
+            font-size: 1.1rem;
+            margin: 10px 0;
+            color: #fff;
+        }
+
+        .team-member p {
+            font-size: 0.9rem;
+            color: #00f2fe;
+            margin: 5px 0;
+        }
+
+        .close-team {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 242, 254, 0.1);
+            color: #00f2fe;
+            border: 1px solid #00f2fe;
+            padding: 8px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-team:hover {
+            background: rgba(0, 242, 254, 0.2);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        /* Existing animations and other styles remain unchanged */
+        @keyframes slideIn {
+            0% { transform: translateX(-100vw); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes zoomFade {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .error-message {
+            animation: shake 0.5s ease-in-out;
+            color: #ff4444;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        .dashboard {
+            position: relative;
+            padding: 20px;
+            height: 100%;
+            display: none; /* Initially hidden */
+        }
+
+        .nav-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .nav-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .feedback-icon {
+            top: 20px;
+            left: 20px;
+        }
+
+        .logo-icon {
+            bottom: 20px;
+            left: 20px;
+        }
+
+        .coin-icon {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .coin-icon:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .account-icon {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+        }
+
+        .menu-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            color: #282c34;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="background">
+        <div class="circuit-lines"></div>
+    </div>
+
+    <!-- Phone Container -->
+    <div class="phone-container">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+            <!-- Clock -->
+            <div class="clock" id="clock"></div>
+
+            <!-- Animated text -->
+            <div class="container">
+                <h1 class="animated-text">UtilityAI 🤖🚀</h1>  
+            </div>
+
+            <!-- Login page with logo -->
+            <div class="login-page">
+                <img src="image.png" alt="UtilityAI Logo" class="utility-ai-logo">
+                <form id="loginForm">
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button type="submit">Log In</button>
+                </form>
+                <button id="skip-login">Skip Login</button>
+            </div>
+
+            <!-- Dashboard -->
+            <div class="dashboard">
+            <img src="feedback.png" alt="Feedback" class="nav-icon feedback-icon" id="feedback-btn">
+            
+            <div class="menu-container">
+                <div class="menu-item" id="photoai-btn">PhotoAI</div>
+                <div class="menu-item" id="videoai-btn">VideoAI</div>
+                <div class="menu-item" id="miscai-btn">MiscellaneousAI</div>
+            </div>
+
+            <img src="logo.png" alt="Logo" class="nav-icon logo-icon" id="logo-btn">
+            <img src="coin-pack-4.png" alt="Coins" class="nav-icon coin-icon" id="coins-btn">
+            <img src="account.png" alt="Account" class="nav-icon account-icon" id="account-btn">
+        </div>
+    </div>
+</div>
+
+            <!-- Team button -->
+            <button id="team-button" class="team-button">Team</button>
+
+            <!-- Team page -->
+            <div id="team-page" class="team-page">
+                <button id="close-team" class="close-team">Close</button>
+                <div class="team-header">
+                    <h2>Meet Our Team</h2>  
+                </div>
+                <div class="team-grid">
+                    <!-- Team members remain unchanged -->
+                    <div class="team-member">
+                        <img src="selfie.jpg" alt="Team Member 1">
+                        <h3>Cristian Taietu</h3>
+                        <p>The CEO</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="placeholder.jpg" alt="Team Member 2">
+                        <h3>Jane Smith</h3>
+                        <p>Data Scientist</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="placeholder.jpg" alt="Team Member 3">
+                        <h3>Mike Johnson</h3>
+                        <p>ML Researcher</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="placeholder.jpg" alt="Team Member 4">
+                        <h3>Sarah Wilson</h3>
+                        <p>UI/UX Designer</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="placeholder.jpg" alt="Team Member 5">
+                        <h3>David Brown</h3>
+                        <p>Backend Dev</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.container');
+            const loginPage = document.querySelector('.login-page');
+            const dashboard = document.querySelector('.dashboard');
+            const teamButton = document.getElementById('team-button');
+            const teamPage = document.getElementById('team-page');
+            const closeTeam = document.getElementById('close-team');
+            const loginForm = document.getElementById('loginForm');
+            const skipLogin = document.getElementById('skip-login');
+
+            const VALID_CREDENTIALS = {
+                username: 'UtilityAI',
+                password: 'group27'
+            };
+
+            setTimeout(() => {
+                container.style.opacity = '0';
+                container.style.transition = 'opacity 1s';
+                loginPage.classList.add('visible');
+                setTimeout(() => {
+                    container.style.display = 'none';
+                }, 1000);
+            }, 4000);
+
+            teamButton.addEventListener('click', () => {
+                teamPage.classList.add('visible');
+            });
+
+            closeTeam.addEventListener('click', () => {
+                teamPage.classList.remove('visible');
+            });
+
+            const showError = () => {
+                const existingError = document.querySelector('.error-message');
+                if (existingError) {
+                    existingError.remove();
+                }
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = 'Invalid login credentials. Please try again.';
+                loginForm.appendChild(errorDiv);
+                document.getElementById('password').value = '';
+            };
+
+            const showDashboard = () => {
+                loginPage.style.opacity = '0';
+                setTimeout(() => {
+                    loginPage.style.display = 'none';
+                    dashboard.classList.add('visible');
+                }, 1000);
+            };
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                if (username === VALID_CREDENTIALS.username && 
+                    password === VALID_CREDENTIALS.password) {
+                    // Show dashboard instead of redirecting
+                    loginPage.style.display = 'none';
+                    dashboard.style.display = 'block';
+                } else {
+                    showError();
+                }
+            });
+
+            skipLogin.addEventListener('click', () => {
+                loginPage.style.display = 'none';
+                dashboard.style.display = 'block';
+            });
+        });
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+
+            document.getElementById('feedback-btn').addEventListener('click', () => {
+                console.log('Feedback clicked');
+                // Add your feedback page logic here
+            });
+
+            document.getElementById('photoai-btn').addEventListener('click', () => {
+                console.log('PhotoAI clicked');
+                // Add your PhotoAI logic here
+            });
+
+            document.getElementById('videoai-btn').addEventListener('click', () => {
+                console.log('VideoAI clicked');
+                // Add your VideoAI logic here
+            });
+
+            document.getElementById('miscai-btn').addEventListener('click', () => {
+                console.log('MiscellaneousAI clicked');
+                // Add your MiscellaneousAI logic here
+            });
+
+            document.getElementById('logo-btn').addEventListener('click', () => {
+                console.log('Logo clicked');
+                // Add your logo click logic here
+            });
+
+            document.getElementById('coins-btn').addEventListener('click', () => {
+                console.log('Coins clicked');
+                // Add your coins page logic here
+            });
+
+            document.getElementById('account-btn').addEventListener('click', () => {
+                console.log('Account clicked');
+                // Add your account page logic here
+            });
+        
+
+        
+        // Update clock every second
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>

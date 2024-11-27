@@ -1,0 +1,92 @@
+/* General styles */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #282c34;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* Phone container */
+.phone-container {
+    position: relative;
+    width: 375px;
+    height: 700px;
+    background: #fff;
+    border-radius: 40px;
+    padding: 20px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.phone-screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #282c34;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+/* Logo styles */
+.logo {
+    width: 150px;
+    height: auto;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Rest of your existing CSS remains the same, just change the positioning to be relative to phone-screen */
+.container {
+    position: relative;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.login-page {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 2s ease-in-out;
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Team page styles update */
+.team-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #282c34;
+    z-index: 2000;
+    box-sizing: border-box;
+    overflow-y: auto;
+    border-radius: 30px;
+}
+
+/* Dashboard styles */
+.dashboard {
+    position: relative;
+    padding: 20px;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard h1 {
+    margin-bottom: 20px;
+}
