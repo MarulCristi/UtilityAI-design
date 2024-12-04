@@ -23,6 +23,25 @@ body {
     pointer-events: none;
 }
 
+.back-button {
+    position: absolute;
+    top: 60px;  /* Positioned below the feedback button */
+    left: 10px;
+    background-color: rgba(0, 242, 254, 0.1);
+    color: #646464;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid #d5c2e0;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    z-index: 1;
+}
+
+.back-button:hover {
+    background-color: rgba(0, 242, 254, 0.2);
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+}
+
 .circuit-lines {
     position: absolute;
     width: 100%;
@@ -506,6 +525,18 @@ right: 15px;  /* Reduced from 20px */
     box-shadow: 0 4px 8px rgba(255, 171, 145, 0.4);
 }
 
+.menu-item.premium {
+    background-color: #ffd700;
+    border-color: #daa520;
+    color: #8b4513;
+    position: relative;
+}
+
+.menu-item.premium:hover {
+    background-color: #ffdf4d;
+    box-shadow: 0 4px 8px rgba(218, 165, 32, 0.4);
+}
+
 .profile-page {
     display: none;
     position: absolute;  /* Changed from fixed */
@@ -599,4 +630,196 @@ right: 15px;  /* Reduced from 20px */
 
 .team-page.visible ~ .bottom-nav {
     display: none;
+}
+
+.coins-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 3000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.coins-menu.visible {
+    display: flex;
+}
+
+.coins-menu-content {
+    background: #DED4E8;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 80%;
+    max-width: 300px;
+}
+
+.coins-menu-content h2 {
+    color: #C7395F;
+    margin-bottom: 20px;
+}
+
+.credit-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.credit-options button {
+    padding: 15px;
+    background-color: #C7395F;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.credit-options button:hover {
+    background-color: #A62C4E;
+}
+
+.close-coins-menu {
+    background-color: #8e8d8a !important;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.price-animation {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #ff0000;
+    font-weight: bold;
+    z-index: 5000;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}
+
+.price-animation.fade-out {
+    opacity: 0;
+}
+
+.feedback-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #DED4E8;
+    z-index: 3000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.feedback-page.visible {
+    display: block;
+    opacity: 1;
+}
+
+.feedback-container {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    height: 100%; /* Ensure full height */
+    position: relative; /* For positioning the close button */
+}
+
+.feedback-container h2 {
+    color: #C7395F;
+    margin-bottom: 30px; /* Add more space */
+    text-align: center;
+    width: 100%;
+}
+
+.feedback-container textarea {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 2px solid #C7395F;
+    border-radius: 8px;
+    resize: none;
+}
+
+.feedback-container button[type="submit"] {
+    background-color: #C7395F;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.feedback-container button[type="submit"]:hover {
+    background-color: #A62C4E;
+}
+
+.close-feedback {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(199, 57, 95, 0.1);
+    color: #C7395F;
+    border: 1px solid #C7395F;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.close-feedback:hover {
+    background: rgba(199, 57, 95, 0.2);
+    box-shadow: 0 0 10px rgba(199, 57, 95, 0.3);
+}
+
+.feedback-container form {
+    width: 90%; /* Control form width */
+    max-width: 400px; /* Maximum width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.current-credits {
+    background: rgba(199, 57, 95, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.current-credits h3 {
+    color: #C7395F;
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+}
+
+.credits-count {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #C7395F;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.credits-label {
+    color: #666;
+    font-size: 0.9rem;
 }

@@ -1,3 +1,6 @@
+
+
+
 // Wait for DOM to load
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize elements
@@ -11,6 +14,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const skipLogin = document.getElementById('skip-login');
     const accountBtn = document.getElementById('account-btn');
     let isLoggedIn = false;
+    const coinsBtn = document.getElementById('coins-btn');
+    const coinsOverlay = document.createElement('div');
+    const coinsMenu = document.createElement('div');
+    coinsMenu.className = 'coins-menu';
+    coinsMenu.innerHTML = `
+        <div class="coins-menu-content">
+            <div class="current-credits">
+                <h3>Current Balance</h3>
+                <span class="credits-count">0</span>
+                <span class="credits-label">credits</span>
+            </div>
+            <h2>Add Credits</h2>
+            <div class="credit-options">
+                <button data-credits="20">20 Credits</button>
+                <button data-credits="50">50 Credits</button>
+                <button data-credits="100">100 Credits</button>
+            </div>
+            <button class="close-coins-menu">Close</button>
+        </div>
+    `;
+    document.querySelector('.phone-container').appendChild(coinsMenu);
+
+
+    let currentUser = null;
+    document.getElementById('coins-btn').addEventListener('click', () => {
+        if (isLoggedIn) {
+            const currentCoins = document.querySelector('.info-value').textContent;
+            coinsMenu.querySelector('.credits-count').textContent = currentCoins;
+            coinsMenu.classList.add('visible');
+            currentUser = Object.keys(VALID_CREDENTIALS).find(
+                username => VALID_CREDENTIALS[username].name === document.querySelector('.profile-name').textContent
+            );
+        }
+    });
+
+    coinsMenu.querySelector('.close-coins-menu').addEventListener('click', () => {
+        coinsMenu.classList.remove('visible');
+    });
+    
+    coinsMenu.querySelector('.credit-options').addEventListener('click', (e) => {
+        if (e.target.matches('[data-credits]')) {
+            const credits = parseInt(e.target.dataset.credits);
+            
+            if (currentUser) {
+                const userData = VALID_CREDENTIALS[currentUser];
+                const userRole = userData.role;
+                
+                let price;
+                if (userRole === 'Student') {
+                    price = credits === 20 ? '-2.99€' : 
+                            credits === 50 ? '-7.99€' : 
+                            credits === 100 ? '-12.99€' : '';
+                } else {
+                    price = credits === 20 ? '-3.99€' : 
+                            credits === 50 ? '-9.99€' : 
+                            credits === 100 ? '-17.99€' : '';
+                }
+    
+                userData.coins += credits;
+                updateProfilePage(userData);
+                coinsMenu.querySelector('.credits-count').textContent = userData.coins; // Update the counter
+                showPriceAnimation(price);
+                coinsMenu.classList.remove('visible');
+            }
+        }
+    });
 
     // Login credentials
     const VALID_CREDENTIALS = {
@@ -35,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             role: 'Student',
             memberSince: 'December 2024',
             coins: 350,
-            status: 'Active',
+            status: 'Authenticated',
             profilePicture: 'student.jpg'
         }
     };
@@ -99,6 +168,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    
+    function showPriceAnimation(price) {
+        const priceAnimation = document.createElement('div');
+        priceAnimation.className = 'price-animation';
+        priceAnimation.textContent = price;
+        document.body.appendChild(priceAnimation);
+
+        setTimeout(() => {
+            priceAnimation.classList.add('fade-out');
+            setTimeout(() => {
+                document.body.removeChild(priceAnimation);
+            }, 1000);
+        }, 1500);
+    }
+
+    function createFeedbackPage() {
+        const feedbackPage = document.createElement('div');
+        feedbackPage.className = 'feedback-page';
+        feedbackPage.innerHTML = `
+            <div class="feedback-container">
+                <button id="close-feedback" class="close-feedback">Close</button>
+                <h2>We Value Your Feedback</h2>
+                <form id="feedback-form">
+                    <textarea id="feedback-message" placeholder="What's wrong? Please describe your issue..." required></textarea>
+                    <button type="submit">Submit Feedback</button>
+                </form>
+            </div>
+        `;
+        document.querySelector('.phone-container').appendChild(feedbackPage);
+        return feedbackPage;
+    }
+
+    document.querySelector('.feedback-icon')?.addEventListener('click', () => {
+    const existingFeedbackPage = document.querySelector('.feedback-page');
+    if (existingFeedbackPage) {
+        existingFeedbackPage.classList.add('visible');
+    } else {
+        const feedbackPage = createFeedbackPage();
+        
+        // Close feedback page
+        document.getElementById('close-feedback').addEventListener('click', () => {
+            feedbackPage.classList.remove('visible');
+        });
+
+        // Handle feedback submission
+        document.getElementById('feedback-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const message = document.getElementById('feedback-message').value.trim();
+            
+            if (message) {
+                const currentUser = document.querySelector('.profile-name').textContent;
+                const currentTime = new Date().toLocaleString();
+                const feedbackEntry = `${currentUser}: ${currentTime}: ${message}`;
+
+                console.log(feedbackEntry);
+                
+                // Clear the message and hide the page
+                document.getElementById('feedback-message').value = '';
+                feedbackPage.classList.remove('visible');
+            }
+        });
+    }
+});
+
+
+
     teamButton?.addEventListener('click', () => {
         teamPage?.classList.add('visible');
     });
@@ -141,6 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 500);
         }
     };
+
 
     // Form handlers
     loginForm.addEventListener('submit', (e) => {
@@ -194,3 +330,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('logo-btn')?.addEventListener('click', showDashboard);
 });
+
