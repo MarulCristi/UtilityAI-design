@@ -61,6 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 coins: 0,
                 status: 'Authenticated',
                 profilePicture: 'student.jpg'
+            },
+            'VACA': {
+                name: 'VACA',
+                role: 'Student',
+                memberSince: 'December 2024',
+                coins: 10,
+                status: 'Authenticated',
+                profilePicture: 'vaca.jpg'
             }
         };
 
