@@ -719,8 +719,8 @@ function createPhotoAIPage() {
                 creditsRequired: 1
             },
             {
-                name: "Automatic Subtitles",
-                description: "Generate automatic subtitles for any video. Supports only English.",
+                name: "Video Summarizer",
+                description: "Summarize videos with AI-powered summarization",
                 creditsRequired: 2
             }
         ];
